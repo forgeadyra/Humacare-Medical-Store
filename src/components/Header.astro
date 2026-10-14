@@ -58,8 +58,8 @@ const links = [
         <span>{d.switchTo}</span>
       </a>
 
-      <a href={telHref} class="btn btn-call !min-h-11 !px-3.5 !text-[0.875rem] sm:!px-4">
-        <Icon name="phone" size={18} stroke={2} />
+      <a href={telHref} class="btn btn-call !min-h-11 !gap-1.5 !px-3.5 !text-[0.875rem] sm:!px-4">
+        <Icon name="phone" size={18} stroke={2} class="hidden min-[400px]:block" />
         <span>{d.nav.callNow}</span>
       </a>
 
@@ -145,11 +145,11 @@ const links = [
   .menu-btn:hover {
     background: var(--color-mint-100);
   }
-  .menu .i-close,
-  .menu[open] .i-open {
+  .menu :global(.i-close),
+  .menu[open] :global(.i-open) {
     display: none;
   }
-  .menu[open] .i-close {
+  .menu[open] :global(.i-close) {
     display: block;
   }
   .menu-panel {

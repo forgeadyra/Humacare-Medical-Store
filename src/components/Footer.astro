@@ -74,14 +74,14 @@ const quick = [
   </div>
 
   <div class="relative border-t border-white/10">
-    <div class="container-x grid gap-4 py-7 text-[0.8125rem] leading-relaxed text-mint-200/75 md:grid-cols-[1fr_auto] md:items-end">
+    <div class="container-x grid gap-4 pt-7 pb-[calc(6.5rem+env(safe-area-inset-bottom))] md:pb-7 text-[0.8125rem] leading-relaxed text-mint-200/75 md:grid-cols-[1fr_auto] md:items-end">
       <div class="grid gap-2">
         <p><span class="font-semibold text-mint-100">{d.footer.licence}</span> {business.drugLicence}</p>
         <p class="max-w-2xl">{d.footer.disclaimer}</p>
         <p>© {year} {business.name}. {d.footer.rights}</p>
       </div>
       <p class="md:text-right">
-        {d.footer.madeBy}
+        {d.footer.madeBy}{' '}
         <span class="font-semibold text-white">{business.credit.name}</span>
       </p>
     </div>

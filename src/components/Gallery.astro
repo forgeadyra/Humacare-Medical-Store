@@ -26,18 +26,18 @@ const photos = [
 <section id="gallery" class="bg-paper-2 py-20 md:py-28" aria-labelledby="gallery-title">
   <div class="container-x">
     <SectionHead id="gallery-title" eyebrow={d.eyebrow} title={d.title} lede={d.lede} />
-    <ul class="masonry mt-12">
+    <ul class="bento mt-12">
       {
         photos.map((p, i) => (
-          <li class="tile" data-reveal style={`--d:${i % 3}`}>
+          <li class:list={['tile', i === 0 && 'tile-hero']} data-reveal style={`--d:${i % 3}`}>
             <Image
               src={p.src}
               alt={p.alt}
               widths={[360, 560, 800]}
-              sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 50vw"
+              sizes={i === 0 ? '(min-width: 1024px) 600px, 100vw' : '(min-width: 1024px) 300px, 50vw'}
               loading="lazy"
               decoding="async"
-              class="h-auto w-full"
+              class="h-full w-full object-cover"
             />
           </li>
         ))
@@ -47,19 +47,34 @@ const photos = [
 </section>
 
 <style>
-  .masonry {
-    columns: 2;
-    column-gap: 0.75rem;
+  /* Masonry-style bento: one feature tile + four supporting tiles, always balanced. */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 9.5rem;
+    gap: 0.75rem;
+  }
+  .tile-hero {
+    grid-column: 1 / -1;
+    grid-row: span 2;
+  }
+  @media (min-width: 640px) {
+    .bento {
+      grid-auto-rows: 12rem;
+    }
   }
   @media (min-width: 1024px) {
-    .masonry {
-      columns: 3;
-      column-gap: 1.25rem;
+    .bento {
+      grid-template-columns: 1.6fr 1fr 1fr;
+      grid-auto-rows: 15rem;
+      gap: 1.25rem;
+    }
+    .tile-hero {
+      grid-column: 1;
+      grid-row: span 2;
     }
   }
   .tile {
-    break-inside: avoid;
-    margin-bottom: 0.75rem;
     overflow: hidden;
     border-radius: 1.25rem;
     background: var(--color-mint-100);
@@ -67,7 +82,6 @@ const photos = [
   }
   @media (min-width: 1024px) {
     .tile {
-      margin-bottom: 1.25rem;
       border-radius: 1.5rem;
     }
   }

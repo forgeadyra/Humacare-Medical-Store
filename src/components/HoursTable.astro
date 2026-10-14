@@ -18,7 +18,7 @@ const d = t(lang).visit;
             {d.days[i]}
             <span class="today-tag">{d.today}</span>
           </th>
-          <td class="text-right tabular-nums">{hoursLabel(lang)}</td>
+          <td class="text-right whitespace-nowrap tabular-nums">{hoursLabel(lang)}</td>
         </tr>
       ))
     }
@@ -34,7 +34,7 @@ const d = t(lang).visit;
   }
   .hours th,
   .hours td {
-    padding: 0.6rem 0.75rem;
+    padding: 0.5rem 0.75rem;
     color: var(--color-ink-soft);
   }
   .hours th {

@@ -7,11 +7,12 @@ interface Props {
   class?: string;
 }
 const { lang, tone = 'dark', class: cls = '' } = Astro.props;
-const sub = lang === 'hi' ? 'मेडिकल स्टोर · मथुरा' : 'Medical Store · Mathura';
+const sub = lang === 'hi' ? 'मेडिकल स्टोर' : 'Medical Store';
+const city = lang === 'hi' ? ' · मथुरा' : ' · Mathura';
 ---
 
 <span class:list={['inline-flex items-center gap-2.5', cls]}>
-  <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" class="shrink-0">
+  <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" class="h-9 w-9 shrink-0 sm:h-10 sm:w-10">
     <defs>
       <linearGradient id={`lg-${tone}`} x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="#14968b"></stop>
@@ -26,8 +27,8 @@ const sub = lang === 'hi' ? 'मेडिकल स्टोर · मथुर�
     <span class:list={['text-[1.15rem] font-extrabold tracking-[-0.02em]', tone === 'dark' ? 'text-brand-950' : 'text-white']}>
       Huma<span class={tone === 'dark' ? 'text-brand-700' : 'text-mint-300'}>care</span>
     </span>
-    <span class:list={['mt-1 text-[0.66rem] font-semibold tracking-[0.08em] uppercase', tone === 'dark' ? 'text-ink-soft' : 'text-mint-200']}>
-      {sub}
+    <span class:list={['mt-1 text-[0.62rem] font-semibold tracking-[0.08em] whitespace-nowrap uppercase sm:text-[0.66rem]', tone === 'dark' ? 'text-ink-soft' : 'text-mint-200']}>
+      {sub}<span class="hidden sm:inline">{city}</span>
     </span>
   </span>
   <span class="sr-only">{business.name}</span>

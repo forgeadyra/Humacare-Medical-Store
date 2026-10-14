@@ -7,9 +7,10 @@
  * character for character.
  */
 
-// TODO(owner): replace with the real domain before launch, e.g. 'https://humacaremedical.in'
-// Also used by astro.config.mjs for canonical URLs and the sitemap.
-export const SITE_URL = 'https://DOMAIN_PLACEHOLDER';
+// TODO(owner): [DOMAIN_PLACEHOLDER] — replace with the owner's own domain before launch,
+// e.g. 'https://humacaremedical.in'. Currently the Netlify preview URL.
+// Also used by astro.config.mjs for canonical URLs, hreflang, OG and the sitemap.
+export const SITE_URL = 'https://humacare-medical-store.netlify.app';
 
 export const business = {
   name: 'Humacare Medical Store',
