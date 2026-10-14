@@ -50,7 +50,7 @@ const schema = [
                 <span class="svc-ico">
                   <Icon name={icons[s.key as keyof typeof icons]} size={30} stroke={1.6} />
                 </span>
-                <span class="text-sm font-bold text-brand-700/60 tabular-nums">0{i + 1}</span>
+                <span class="text-sm font-bold text-ink-soft tabular-nums" aria-hidden="true">0{i + 1}</span>
               </div>
               <h2 id={`${s.key}-title`} class="mt-5 text-2xl font-extrabold tracking-[-0.02em] text-brand-950 md:text-[1.9rem]">
                 {s.title}

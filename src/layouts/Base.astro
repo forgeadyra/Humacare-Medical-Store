@@ -4,6 +4,7 @@ import '@fontsource/noto-sans-devanagari/devanagari-400.css';
 import '@fontsource/noto-sans-devanagari/devanagari-700.css';
 import '../styles/global.css';
 import jakartaLatin from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
+import devanagari400 from '@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-400-normal.woff2?url';
 import devanagari700 from '@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-700-normal.woff2?url';
 
 import Header from '../components/Header.astro';
@@ -50,10 +51,14 @@ const ogImage = abs('/og-image.png');
     {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
     <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
 
-    <!-- Hero font weight only (Latin variable font; Devanagari on Hindi pages) -->
+    <!-- Hero font only. Hindi pages also preload the body weight so Devanagari text
+         is laid out once instead of re-shaping the whole page when it arrives. -->
     {
       lang === 'hi' ? (
-        <link rel="preload" href={devanagari700} as="font" type="font/woff2" crossorigin />
+        <>
+          <link rel="preload" href={devanagari700} as="font" type="font/woff2" crossorigin />
+          <link rel="preload" href={devanagari400} as="font" type="font/woff2" crossorigin />
+        </>
       ) : (
         <link rel="preload" href={jakartaLatin} as="font" type="font/woff2" crossorigin />
       )

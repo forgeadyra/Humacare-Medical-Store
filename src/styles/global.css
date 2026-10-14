@@ -156,7 +156,6 @@
     font-size: 1.0625rem;
     line-height: 1.65;
     color: var(--color-ink-soft);
-    text-wrap: pretty;
   }
 
   /* Buttons — min 48px tap target */
