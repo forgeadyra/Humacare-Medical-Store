@@ -1,0 +1,92 @@
+---
+import { t, type Lang } from '../i18n/ui';
+interface Props {
+  lang: Lang;
+  class?: string;
+}
+const { lang, class: cls = '' } = Astro.props;
+const b = t(lang).badge;
+---
+
+<span
+  data-open-badge
+  data-open-text={b.openNow}
+  data-closed-text={b.closed}
+  data-closes-text={b.closesAt}
+  data-opens-text={b.opensAt}
+  role="status"
+  class:list={['open-badge', cls]}
+>
+  <span class="open-dot" aria-hidden="true"></span>
+  <span data-status class="font-bold">{b.fallback}</span>
+  <span class="open-sep" aria-hidden="true">·</span>
+  <span data-next></span>
+</span>
+
+<style>
+  .open-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.25rem;
+    padding: 0.4rem 0.95rem 0.4rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    background: #fff;
+    color: var(--color-brand-900);
+    box-shadow: inset 0 0 0 1px var(--color-mint-200), var(--shadow-soft);
+  }
+  .open-sep,
+  [data-next]:empty {
+    display: none;
+  }
+  .open-badge[data-state] .open-sep {
+    display: inline;
+    opacity: 0.5;
+  }
+  .open-dot {
+    position: relative;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 999px;
+    background: var(--color-brand-600);
+    flex: none;
+  }
+  .open-badge[data-state='open'] {
+    background: var(--color-saffron-50);
+    color: #5c3204;
+    box-shadow: inset 0 0 0 1px var(--color-saffron-300), var(--shadow-soft);
+  }
+  .open-badge[data-state='open'] .open-dot {
+    background: var(--color-saffron-500);
+  }
+  .open-badge[data-state='open'] .open-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--color-saffron-400);
+    animation: ping 1.8s var(--ease-out-soft) infinite;
+  }
+  .open-badge[data-state='closed'] {
+    color: #6b2b2b;
+    background: #fdf2f1;
+    box-shadow: inset 0 0 0 1px #f3cfcb, var(--shadow-soft);
+  }
+  .open-badge[data-state='closed'] .open-dot {
+    background: #c2463b;
+  }
+  @keyframes ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    80%,
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+</style>

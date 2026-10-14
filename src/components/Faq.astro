@@ -1,0 +1,102 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { business, telHref, whatsappHref } from '../data/business';
+import { t, type Lang } from '../i18n/ui';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang);
+---
+
+<section id="faq" class="pb-20 md:pb-28" aria-labelledby="faq-title">
+  <div class="container-x grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <SectionHead id="faq-title" eyebrow={d.faq.eyebrow} title={d.faq.title} />
+      <div class="mt-8 hidden gap-3 lg:flex" data-reveal>
+        <a href={telHref} class="btn btn-call"><Icon name="phone" size={18} stroke={2} />{business.phone.display}</a>
+        <a href={whatsappHref(lang)} target="_blank" rel="noopener" class="btn btn-wa"><Icon name="whatsapp" size={18} stroke={2} />{d.cta.whatsapp}</a>
+      </div>
+    </div>
+
+    <div class="grid gap-3">
+      {
+        d.faq.items.map((f, i) => (
+          <details class="faq card" data-reveal style={`--d:${i % 3}`} open={i === 0}>
+            <summary class="faq-q">
+              <h3 class="text-[1.0625rem] font-bold text-brand-950">{f.q}</h3>
+              <span class="faq-ico" aria-hidden="true">
+                <Icon name="chevron" size={20} stroke={2} />
+              </span>
+            </summary>
+            <div class="faq-a">
+              <p>{f.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    border-radius: 1.25rem;
+    transition: box-shadow 300ms;
+  }
+  .faq[open] {
+    box-shadow: var(--shadow-lift);
+  }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.75rem;
+    padding: 1rem 1.25rem;
+    list-style: none;
+  }
+  @media (min-width: 768px) {
+    .faq-q {
+      padding: 1.15rem 1.5rem;
+    }
+  }
+  .faq-ico {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    background: var(--color-mint-100);
+    color: var(--color-brand-800);
+    transition:
+      transform 300ms var(--ease-out-soft),
+      background-color 300ms;
+  }
+  .faq[open] .faq-ico {
+    transform: rotate(180deg);
+    background: var(--color-brand-700);
+    color: #fff;
+  }
+  .faq-a {
+    padding: 0 1.25rem 1.25rem;
+    color: var(--color-ink-soft);
+    line-height: 1.7;
+  }
+  @media (min-width: 768px) {
+    .faq-a {
+      padding: 0 1.5rem 1.4rem;
+    }
+  }
+  .faq[open] .faq-a {
+    animation: faq-in 320ms var(--ease-out-soft);
+  }
+  @keyframes faq-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+</style>

@@ -1,0 +1,273 @@
+---
+/**
+ * Custom illustrated chemist scene (inline SVG, no external requests).
+ * Animations: bottles slide onto shelves (staggered), cross pulses, capsule rotates.
+ * All motion is transform/opacity only and is disabled for prefers-reduced-motion.
+ */
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+
+type Item =
+  | { t: 'bottle'; x: number; w: number; h: number; body: string; cap: string }
+  | { t: 'jar'; x: number; w: number; h: number; body: string; cap: string }
+  | { t: 'box'; x: number; w: number; h: number; body: string; cap: string }
+  | { t: 'dropper'; x: number; w: number; h: number; body: string; cap: string };
+
+const shelves: { base: number; items: Item[] }[] = [
+  {
+    base: 150,
+    items: [
+      { t: 'bottle', x: 90, w: 28, h: 50, body: '#f2a93b', cap: '#0f766e' },
+      { t: 'bottle', x: 126, w: 24, h: 62, body: '#ffffff', cap: '#0f766e' },
+      { t: 'jar', x: 160, w: 46, h: 34, body: '#9adbc5', cap: '#0b544e' },
+      { t: 'box', x: 214, w: 40, h: 46, body: '#ffffff', cap: '#0f766e' },
+      { t: 'dropper', x: 264, w: 20, h: 30, body: '#14968b', cap: '#f8ac2c' },
+      { t: 'bottle', x: 294, w: 26, h: 46, body: '#c97a12', cap: '#083d39' },
+      { t: 'box', x: 328, w: 30, h: 32, body: '#dff4ec', cap: '#ef9410' },
+    ],
+  },
+  {
+    base: 232,
+    items: [
+      { t: 'box', x: 88, w: 46, h: 36, body: '#fff7e8', cap: '#ef9410' },
+      { t: 'box', x: 140, w: 30, h: 50, body: '#ffffff', cap: '#14968b' },
+      { t: 'bottle', x: 178, w: 30, h: 54, body: '#0f766e', cap: '#f8ac2c' },
+      { t: 'jar', x: 216, w: 40, h: 30, body: '#ffffff', cap: '#f8ac2c' },
+      { t: 'bottle', x: 266, w: 22, h: 40, body: '#f2a93b', cap: '#0b544e' },
+      { t: 'dropper', x: 296, w: 18, h: 28, body: '#c97a12', cap: '#0f766e' },
+      { t: 'box', x: 322, w: 38, h: 42, body: '#c3eadc', cap: '#0b544e' },
+    ],
+  },
+  {
+    base: 314,
+    items: [
+      { t: 'jar', x: 88, w: 50, h: 40, body: '#c3eadc', cap: '#0f766e' },
+      { t: 'box', x: 146, w: 36, h: 54, body: '#ffffff', cap: '#ef9410' },
+      { t: 'bottle', x: 190, w: 32, h: 58, body: '#ffffff', cap: '#14968b' },
+      { t: 'box', x: 230, w: 50, h: 32, body: '#fff7e8', cap: '#0f766e' },
+      { t: 'bottle', x: 288, w: 26, h: 44, body: '#0f766e', cap: '#ffffff' },
+      { t: 'jar', x: 322, w: 38, h: 36, body: '#f8ac2c', cap: '#0b544e' },
+    ],
+  },
+];
+const EDGE = '#bfe0d4';
+let n = 0;
+---
+
+<svg class="illo block h-auto w-full" viewBox="0 0 600 540" role="img" aria-label={label}>
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9f7f1"></stop>
+      <stop offset="1" stop-color="#d4efe5"></stop>
+    </linearGradient>
+    <radialGradient id="halo">
+      <stop offset="0" stop-color="#f8ac2c" stop-opacity=".55"></stop>
+      <stop offset="1" stop-color="#f8ac2c" stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id="counterFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12877e"></stop>
+      <stop offset="1" stop-color="#0b544e"></stop>
+    </linearGradient>
+    <clipPath id="wallClip"><rect width="600" height="540" rx="36"></rect></clipPath>
+  </defs>
+
+  <g clip-path="url(#wallClip)">
+    <rect width="600" height="540" fill="url(#wall)"></rect>
+    <!-- soft window light -->
+    <path d="M420 0h180v300L360 0z" fill="#fff" opacity=".35"></path>
+    <!-- floor -->
+    <rect y="500" width="600" height="40" fill="#c9e7dc"></rect>
+
+    <!-- floating plus marks -->
+    <g fill="none" stroke="#9adbc5" stroke-width="4" stroke-linecap="round" class="float">
+      <path d="M38 52v18M29 61h18"></path>
+      <path d="M392 26v14M385 33h14"></path>
+      <path d="M572 214v14M565 221h14"></path>
+    </g>
+
+    <!-- shelving unit -->
+    <rect x="64" y="64" width="312" height="262" rx="16" fill="#fff" fill-opacity=".6" stroke={EDGE} stroke-width="2"></rect>
+
+    {
+      shelves.map((s) => (
+        <g>
+          {s.items.map((it) => {
+            const i = n++;
+            const top = s.base - it.h;
+            return (
+              <g class="item" style={`--i:${i}`}>
+                {it.t === 'bottle' && (
+                  <>
+                    <rect x={it.x + it.w * 0.25} y={top - 6} width={it.w * 0.5} height="8" fill={it.body} stroke={EDGE} stroke-width="1.2" />
+                    <rect x={it.x + it.w * 0.17} y={top - 15} width={it.w * 0.66} height="10" rx="3" fill={it.cap} />
+                    <rect x={it.x} y={top} width={it.w} height={it.h} rx={Math.min(8, it.w / 3.5)} fill={it.body} stroke={EDGE} stroke-width="1.2" />
+                    <rect x={it.x + 4} y={top + it.h * 0.36} width={it.w - 8} height={it.h * 0.36} rx="3" fill="#fff" opacity=".92" />
+                    <path d={`M${it.x + it.w / 2} ${top + it.h * 0.45}v${it.h * 0.18}M${it.x + it.w / 2 - it.h * 0.09} ${top + it.h * 0.54}h${it.h * 0.18}`} stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" />
+                    <rect x={it.x + 3.5} y={top + 5} width="3" height={it.h * 0.24} rx="1.5" fill="#fff" opacity=".45" />
+                  </>
+                )}
+                {it.t === 'jar' && (
+                  <>
+                    <rect x={it.x} y={top} width={it.w} height={it.h} rx="9" fill={it.body} stroke={EDGE} stroke-width="1.2" />
+                    <rect x={it.x - 2} y={top - 9} width={it.w + 4} height="11" rx="4" fill={it.cap} />
+                    <rect x={it.x + 5} y={top + it.h * 0.3} width={it.w - 10} height={it.h * 0.38} rx="3" fill="#fff" opacity=".9" />
+                    <rect x={it.x + 10} y={top + it.h * 0.44} width={it.w - 20} height="3" rx="1.5" fill={it.cap} opacity=".55" />
+                  </>
+                )}
+                {it.t === 'box' && (
+                  <>
+                    <rect x={it.x} y={top} width={it.w} height={it.h} rx="4" fill={it.body} stroke={EDGE} stroke-width="1.2" />
+                    <rect x={it.x} y={top} width={it.w} height={it.h * 0.24} rx="4" fill={it.cap} />
+                    <rect x={it.x + 5} y={top + it.h * 0.42} width={it.w * 0.6} height="3" rx="1.5" fill="#0f2a27" opacity=".22" />
+                    <rect x={it.x + 5} y={top + it.h * 0.42 + 7} width={it.w * 0.4} height="3" rx="1.5" fill="#0f2a27" opacity=".14" />
+                  </>
+                )}
+                {it.t === 'dropper' && (
+                  <>
+                    <ellipse cx={it.x + it.w / 2} cy={top - 13} rx={it.w * 0.3} ry="8" fill={it.cap} />
+                    <rect x={it.x + it.w * 0.2} y={top - 6} width={it.w * 0.6} height="8" rx="2" fill="#0f2a27" opacity=".75" />
+                    <rect x={it.x} y={top} width={it.w} height={it.h} rx="6" fill={it.body} />
+                    <rect x={it.x + 3} y={top + it.h * 0.4} width={it.w - 6} height={it.h * 0.32} rx="2" fill="#fff" opacity=".9" />
+                  </>
+                )}
+              </g>
+            );
+          })}
+          <rect x="58" y={s.base} width="324" height="11" rx="3" fill="#0b544e" />
+          <rect x="58" y={s.base} width="324" height="3" rx="1.5" fill="#1aa192" />
+        </g>
+      ))
+    }
+
+    <!-- hanging pharmacy cross -->
+    <g>
+      <path d="M470 0v40" stroke="#0b544e" stroke-width="3"></path>
+      <circle cx="470" cy="118" r="78" fill="url(#halo)" class="halo"></circle>
+      <g class="cross">
+        <rect x="422" y="70" width="96" height="96" rx="26" fill="#0f766e"></rect>
+        <rect x="422" y="70" width="96" height="96" rx="26" fill="none" stroke="#1aa192" stroke-width="3"></rect>
+        <path d="M459 88h22v19h19v22h-19v19h-22v-19h-19v-22h19z" fill="#fff"></path>
+      </g>
+    </g>
+
+    <!-- rotating capsule -->
+    <g transform="translate(486 250)">
+      <g class="spin">
+        <path d="M-24 -15h24v30h-24a15 15 0 0 1 0-30z" fill="#f8ac2c"></path>
+        <path d="M0 -15h24a15 15 0 0 1 0 30H0z" fill="#fff" stroke={EDGE} stroke-width="1.5"></path>
+        <rect x="-30" y="-9" width="18" height="4" rx="2" fill="#fff" opacity=".55"></rect>
+      </g>
+    </g>
+    <g class="float-slow">
+      <g transform="translate(548 312) rotate(35)">
+        <rect x="-14" y="-6" width="28" height="12" rx="6" fill="#9adbc5"></rect>
+        <path d="M0 -6v12" stroke="#fff" stroke-width="1.5"></path>
+      </g>
+    </g>
+
+    <!-- counter -->
+    <ellipse cx="300" cy="512" rx="290" ry="9" fill="#042f2c" opacity=".12"></ellipse>
+    <rect x="30" y="362" width="540" height="148" fill="url(#counterFront)"></rect>
+    <rect x="30" y="362" width="540" height="6" fill="#f8ac2c"></rect>
+    <rect x="58" y="388" width="156" height="98" rx="12" fill="#fff" opacity=".07"></rect>
+    <rect x="386" y="388" width="156" height="98" rx="12" fill="#fff" opacity=".07"></rect>
+    <circle cx="300" cy="437" r="34" fill="#fbf8f3"></circle>
+    <path d="M293 418h14v12h12v14h-12v12h-14v-12h-12v-14h12z" fill="#0f766e"></path>
+    <rect x="16" y="344" width="568" height="20" rx="10" fill="#083d39"></rect>
+    <rect x="16" y="344" width="568" height="5" rx="2.5" fill="#14968b"></rect>
+
+    <!-- plant -->
+    <g>
+      <path d="M82 296c-18-6-26-24-22-38 14 4 24 18 22 38z" fill="#1aa192"></path>
+      <path d="M86 296c4-22 18-34 34-34 0 18-14 32-34 34z" fill="#12877e"></path>
+      <path d="M84 300c-4-20 0-38 10-48 8 14 6 34-10 48z" fill="#0f766e"></path>
+      <path d="M62 344l6-40h40l6 40z" fill="#e58e4f"></path>
+      <rect x="58" y="300" width="60" height="10" rx="4" fill="#d07a3c"></rect>
+    </g>
+
+    <!-- pharmacy paper bag -->
+    <g>
+      <rect x="236" y="276" width="74" height="68" rx="4" fill="#f3e9d6"></rect>
+      <path d="M236 276h74v12h-74z" fill="#e7d8bd"></path>
+      <path d="M248 276v-6a8 8 0 0 1 16 0v6M282 276v-6a8 8 0 0 1 16 0v6" fill="none" stroke="#c9b48e" stroke-width="2.5"></path>
+      <path d="M268 302h10v8h8v10h-8v8h-10v-8h-8v-10h8z" fill="#0f766e"></path>
+    </g>
+    <!-- small pill bottle on counter -->
+    <g>
+      <rect x="160" y="304" width="34" height="40" rx="7" fill="#fff" stroke={EDGE} stroke-width="1.5"></rect>
+      <rect x="157" y="294" width="40" height="12" rx="4" fill="#f8ac2c"></rect>
+      <rect x="165" y="316" width="24" height="14" rx="3" fill="#dff4ec"></rect>
+    </g>
+
+    <!-- mortar & pestle -->
+    <g>
+      <ellipse cx="470" cy="293" rx="52" ry="8" fill="#b9ad97"></ellipse>
+      <rect x="474" y="228" width="16" height="78" rx="8" fill="#e2d9c8" stroke="#c4b79f" stroke-width="1.5" transform="rotate(28 482 300)"></rect>
+      <path d="M418 292h104a4 4 0 0 1 4 4c0 26-21 44-56 44s-56-18-56-44a4 4 0 0 1 4-4z" fill="#efe8db" stroke="#d3c7b1" stroke-width="1.5"></path>
+      <path d="M432 306c8 14 22 20 38 20" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".7"></path>
+      <rect x="448" y="336" width="44" height="10" rx="4" fill="#d3c7b1"></rect>
+    </g>
+  </g>
+</svg>
+
+<style>
+  .item {
+    transform-box: fill-box;
+    animation: slide-on 620ms var(--ease-out-soft) both;
+    animation-delay: calc(260ms + var(--i) * 48ms);
+  }
+  @keyframes slide-on {
+    from {
+      opacity: 0;
+      transform: translate3d(-26px, -8px, 0);
+    }
+  }
+  .cross {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pulse-cross 2.8s ease-in-out 1.4s infinite;
+  }
+  .halo {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: halo 2.8s ease-in-out 1.4s infinite;
+    opacity: 0.45;
+  }
+  @keyframes halo {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.88);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.08);
+    }
+  }
+  .spin {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: spin 14s linear infinite;
+  }
+  .float {
+    animation: bob 6s ease-in-out infinite;
+  }
+  .float-slow {
+    animation: bob 8s ease-in-out infinite reverse;
+  }
+  @keyframes bob {
+    50% {
+      transform: translate3d(0, -6px, 0);
+    }
+  }
+  .float-slow {
+    transform-box: fill-box;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

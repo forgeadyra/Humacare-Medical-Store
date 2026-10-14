@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import Services from '../components/Services.astro';
+import Why from '../components/Why.astro';
+import Reviews from '../components/Reviews.astro';
+import Gallery from '../components/Gallery.astro';
+import Visit from '../components/Visit.astro';
+import Faq from '../components/Faq.astro';
+import { t, type Lang } from '../i18n/ui';
+import { pharmacySchema, websiteSchema, faqSchema } from '../lib/schema';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang);
+
+// aggregateRating is included because the reviews are visibly shown on this page.
+const schema = [pharmacySchema({ lang, withRating: true }), websiteSchema(lang), faqSchema(d.faq.items)];
+---
+
+<Base lang={lang} routeKey="home" title={d.meta.home.title} description={d.meta.home.description} schema={schema}>
+  <Hero lang={lang} />
+  <TrustStrip lang={lang} />
+  <Services lang={lang} />
+  <Why lang={lang} />
+  <Reviews lang={lang} />
+  <Gallery lang={lang} />
+  <Visit lang={lang} />
+  <Faq lang={lang} />
+</Base>

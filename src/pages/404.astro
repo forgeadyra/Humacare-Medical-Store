@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { business, telHref } from '../data/business';
+import { ui } from '../i18n/ui';
+
+const en = ui.en.notFound;
+const hi = ui.hi.notFound;
+---
+
+<Base lang="en" routeKey={null} title={`Page not found | ${business.name}`} description={en.text} noindex>
+  <section class="relative overflow-hidden">
+    <div class="nf-mesh" aria-hidden="true"></div>
+    <div class="container-x relative grid min-h-[70vh] place-items-center py-16 text-center">
+      <div class="max-w-xl">
+        <svg viewBox="0 0 240 150" class="mx-auto w-56" aria-hidden="true">
+          <rect x="20" y="40" width="200" height="8" rx="3" fill="#0b544e"></rect>
+          <rect x="20" y="100" width="200" height="8" rx="3" fill="#0b544e"></rect>
+          <rect x="34" y="8" width="24" height="32" rx="6" fill="#f2a93b"></rect>
+          <rect x="38" y="2" width="16" height="8" rx="3" fill="#0f766e"></rect>
+          <rect x="66" y="16" width="34" height="24" rx="6" fill="#9adbc5"></rect>
+          <rect x="176" y="10" width="30" height="30" rx="4" fill="#fff" stroke="#bfe0d4" stroke-width="2"></rect>
+          <rect x="40" y="70" width="34" height="30" rx="4" fill="#fff" stroke="#bfe0d4" stroke-width="2"></rect>
+          <rect x="160" y="64" width="22" height="36" rx="6" fill="#0f766e"></rect>
+          <rect x="114" y="52" width="40" height="46" rx="10" fill="none" stroke="#c3b9a6" stroke-width="2.5" stroke-dasharray="6 6"></rect>
+          <text x="134" y="82" text-anchor="middle" font-size="20" font-weight="800" fill="#c3b9a6" font-family="system-ui">?</text>
+        </svg>
+        <p class="mt-6 text-sm font-bold tracking-[0.14em] text-brand-700 uppercase">404</p>
+        <h1 class="mt-2 text-3xl font-extrabold tracking-[-0.03em] text-brand-950 md:text-4xl">{en.h1}</h1>
+        <p class="lede mt-3">{en.text}</p>
+        <p class="mt-5 text-xl font-bold text-brand-900" lang="hi">{hi.h1}</p>
+        <p class="mt-2 text-ink-soft" lang="hi">{hi.text}</p>
+        <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <a href={telHref} class="btn btn-call"><Icon name="phone" size={18} stroke={2} />{ui.en.cta.call}</a>
+          <a href="/" class="btn btn-ghost"><Icon name="home" size={18} />{en.home}</a>
+          <a href="/hi/" class="btn btn-ghost" lang="hi"><Icon name="home" size={18} />{hi.home}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf-mesh {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(45% 50% at 50% 20%, rgb(195 234 220 / 0.8), transparent 70%),
+      radial-gradient(30% 40% at 90% 90%, rgb(252 197 96 / 0.15), transparent 70%);
+  }
+</style>

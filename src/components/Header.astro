@@ -1,0 +1,190 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { telHref } from '../data/business';
+import { t, type Lang, type RouteKey } from '../i18n/ui';
+import { pathFor, homeAnchor } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  routeKey: RouteKey | null;
+}
+const { lang, routeKey } = Astro.props;
+const d = t(lang);
+const other: Lang = lang === 'en' ? 'hi' : 'en';
+const switchHref = pathFor(routeKey ?? 'home', other);
+
+const links = [
+  { href: pathFor('services', lang), label: d.nav.services, key: 'services' },
+  { href: homeAnchor(lang, 'reviews'), label: d.nav.reviews, key: 'reviews' },
+  { href: homeAnchor(lang, 'visit'), label: d.nav.visit, key: 'visit' },
+  { href: pathFor('contact', lang), label: d.nav.contact, key: 'contact' },
+];
+---
+
+<header class="site-header sticky top-0 z-50">
+  <div class="container-x flex h-16 items-center gap-3 md:h-[4.5rem]">
+    <a href={pathFor('home', lang)} class="-ml-1 rounded-xl p-1" aria-label={`${d.nav.home} – Humacare Medical Store`}>
+      <Logo lang={lang} />
+    </a>
+
+    <nav aria-label={d.nav.primary} class="ml-auto hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                aria-current={routeKey === l.key ? 'page' : undefined}
+                class="nav-link"
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-1.5 sm:gap-2 lg:ml-3">
+      <a
+        href={switchHref}
+        hreflang={other === 'hi' ? 'hi-IN' : 'en-IN'}
+        lang={other}
+        class="lang-toggle"
+        aria-label={d.switchToLabel}
+      >
+        <Icon name="globe" size={17} class="hidden sm:block" />
+        <span>{d.switchTo}</span>
+      </a>
+
+      <a href={telHref} class="btn btn-call !min-h-11 !px-3.5 !text-[0.875rem] sm:!px-4">
+        <Icon name="phone" size={18} stroke={2} />
+        <span>{d.nav.callNow}</span>
+      </a>
+
+      <details class="menu relative lg:hidden">
+        <summary class="menu-btn" aria-label={d.nav.menu}>
+          <Icon name="menu" size={22} class="i-open" />
+          <Icon name="close" size={22} class="i-close" />
+        </summary>
+        <div class="menu-panel">
+          <nav aria-label={d.nav.primary}>
+            <ul class="grid gap-1">
+              <li><a href={pathFor('home', lang)} class="menu-link"><Icon name="home" size={20} />{d.nav.home}</a></li>
+              <li><a href={links[0].href} class="menu-link"><Icon name="kit" size={20} />{d.nav.services}</a></li>
+              <li><a href={links[1].href} class="menu-link"><Icon name="star" size={20} class="text-saffron-500" />{d.nav.reviews}</a></li>
+              <li><a href={links[2].href} class="menu-link"><Icon name="pin" size={20} />{d.nav.visit}</a></li>
+              <li><a href={links[3].href} class="menu-link"><Icon name="advice" size={20} />{d.nav.contact}</a></li>
+            </ul>
+          </nav>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: rgb(251 248 243 / 0.94);
+    border-bottom: 1px solid rgb(15 42 39 / 0.07);
+  }
+  @supports (backdrop-filter: blur(1px)) {
+    @media (min-width: 1024px) {
+      .site-header {
+        background: rgb(251 248 243 / 0.82);
+        backdrop-filter: saturate(1.4) blur(12px);
+      }
+    }
+  }
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-ink-soft);
+    transition:
+      color 200ms,
+      background-color 200ms;
+  }
+  .nav-link:hover,
+  .nav-link[aria-current='page'] {
+    color: var(--color-brand-900);
+    background: var(--color-mint-100);
+  }
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    justify-content: center;
+    padding: 0 0.7rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--color-brand-800);
+    box-shadow: inset 0 0 0 1.5px var(--color-mint-200);
+    transition: background-color 200ms;
+  }
+  .lang-toggle:hover {
+    background: var(--color-mint-100);
+  }
+  .menu-btn {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    color: var(--color-brand-900);
+    list-style: none;
+  }
+  .menu-btn:hover {
+    background: var(--color-mint-100);
+  }
+  .menu .i-close,
+  .menu[open] .i-open {
+    display: none;
+  }
+  .menu[open] .i-close {
+    display: block;
+  }
+  .menu-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.6rem);
+    width: min(17rem, calc(100vw - 2rem));
+    padding: 0.5rem;
+    border-radius: 1.25rem;
+    background: #fff;
+    box-shadow: var(--shadow-lift);
+    border: 1px solid rgb(15 42 39 / 0.06);
+    transform-origin: top right;
+    animation: menu-in 220ms var(--ease-out-soft);
+  }
+  .menu-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3rem;
+    padding: 0 0.9rem;
+    border-radius: 0.9rem;
+    font-weight: 600;
+    color: var(--color-brand-950);
+  }
+  .menu-link :global(svg) {
+    color: var(--color-brand-700);
+  }
+  .menu-link:hover {
+    background: var(--color-mint-50);
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.97);
+    }
+  }
+</style>

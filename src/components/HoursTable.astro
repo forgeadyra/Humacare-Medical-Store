@@ -1,0 +1,74 @@
+---
+import { business, hoursLabel } from '../data/business';
+import { t, type Lang } from '../i18n/ui';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang).visit;
+---
+
+<table class="hours w-full text-[0.95rem]">
+  <caption class="sr-only">{d.hours}</caption>
+  <tbody>
+    {
+      business.hours.days.map((_, i) => (
+        <tr data-day-row={i}>
+          <th scope="row" class="text-left font-semibold">
+            {d.days[i]}
+            <span class="today-tag">{d.today}</span>
+          </th>
+          <td class="text-right tabular-nums">{hoursLabel(lang)}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<style>
+  .hours tr {
+    border-bottom: 1px dashed var(--color-line);
+  }
+  .hours tr:last-child {
+    border-bottom: 0;
+  }
+  .hours th,
+  .hours td {
+    padding: 0.6rem 0.75rem;
+    color: var(--color-ink-soft);
+  }
+  .hours th {
+    color: var(--color-brand-950);
+  }
+  .today-tag {
+    display: none;
+    margin-left: 0.5rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: 0.1em;
+    background: var(--color-saffron-400);
+    color: #2b1700;
+  }
+  .hours tr[data-today] {
+    background: var(--color-saffron-50);
+    border-bottom-color: transparent;
+  }
+  .hours tr[data-today] th,
+  .hours tr[data-today] td {
+    color: #5c3204;
+    font-weight: 700;
+  }
+  .hours tr[data-today] th {
+    border-radius: 0.75rem 0 0 0.75rem;
+  }
+  .hours tr[data-today] td {
+    border-radius: 0 0.75rem 0.75rem 0;
+  }
+  .hours tr[data-today] .today-tag {
+    display: inline-block;
+  }
+</style>

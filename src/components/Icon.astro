@@ -1,0 +1,87 @@
+---
+/**
+ * Custom line icon set. 24×24 grid, 1.75 stroke, round caps.
+ * Decorative by default (aria-hidden); pass `label` to expose to screen readers.
+ */
+interface Props {
+  name: keyof typeof paths | 'google' | 'star' | 'play';
+  size?: number;
+  class?: string;
+  label?: string;
+  stroke?: number;
+}
+const { name, size = 22, class: cls = '', label, stroke = 1.75 } = Astro.props;
+
+const paths = {
+  phone:
+    '<path d="M5.2 3.8h3.1l1.6 4.1-2.1 1.4a11.5 11.5 0 0 0 6.9 6.9l1.4-2.1 4.1 1.6v3.1a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 3.2 6a2 2 0 0 1 2-2.2z"/>',
+  whatsapp:
+    '<path d="M3.6 20.4l1.3-4A8.6 8.6 0 1 1 8.1 19.3z"/><path d="M9.1 8.3c.3-.3.7-.3.9 0l.9 1.7c.1.3 0 .5-.2.7l-.5.5a6 6 0 0 0 2.6 2.6l.5-.5c.2-.2.4-.3.7-.2l1.7.9c.3.2.3.6 0 .9-.6.7-1.5 1-2.4.7a7.6 7.6 0 0 1-4.7-4.7c-.3-.9 0-1.8.5-2.6z"/>',
+  pin: '<path d="M12 21.2s-6.8-5.9-6.8-11.4a6.8 6.8 0 0 1 13.6 0c0 5.5-6.8 11.4-6.8 11.4z"/><circle cx="12" cy="9.8" r="2.5"/>',
+  directions: '<path d="M3.5 11.2 20.5 3.5l-7.7 17-1.9-7.8z"/>',
+  clock: '<circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2"/>',
+  check: '<path d="M5 12.6l4.4 4.4L19 7.4"/>',
+  shield:
+    '<path d="M12 3.2l7.3 2.9v5.4c0 4.5-3.1 8.2-7.3 9.3-4.2-1.1-7.3-4.8-7.3-9.3V6.1z"/><path d="M8.8 12.1l2.3 2.3 4.2-4.3"/>',
+  rx: '<rect x="4.8" y="4.2" width="14.4" height="16.6" rx="2.6"/><path d="M9.2 4.2V3h5.6v1.2"/><path d="M12 9.2v5.6M9.2 12h5.6"/><path d="M9 17.6h6"/>',
+  pill: '<rect x="2.6" y="8.4" width="18.8" height="7.2" rx="3.6" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/><path d="M6.6 11.3l1.6-1.6" opacity=".55"/>',
+  kit: '<rect x="3" y="7" width="18" height="13" rx="2.6"/><path d="M8.6 7V5.6c0-.9.7-1.6 1.6-1.6h3.6c.9 0 1.6.7 1.6 1.6V7"/><path d="M12 10.6v6M9 13.6h6"/>',
+  advice:
+    '<path d="M20.4 11.8a8.4 8.4 0 0 1-12.2 7.5L3.8 20.4l1.1-4.2a8.4 8.4 0 1 1 15.5-4.4z"/><path d="M12 8.4v6.8M8.6 11.8h6.8"/>',
+  delivery:
+    '<path d="M2.8 6.5h10.4v9H2.8z"/><path d="M13.2 9.6h3.9l3.1 3.2v2.7h-7"/><circle cx="6.8" cy="17.6" r="1.9"/><circle cx="16.6" cy="17.6" r="1.9"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  chevron: '<path d="M6 9.5l6 6 6-6"/>',
+  external:
+    '<path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v4.6c0 .8-.6 1.4-1.4 1.4H5.4c-.8 0-1.4-.6-1.4-1.4V7.4C4 6.6 4.6 6 5.4 6H10"/>',
+  pause: '<path d="M8.5 5.5v13M15.5 5.5v13"/>',
+  menu: '<path d="M4 7.5h16M4 12h16M4 16.5h10"/>',
+  close: '<path d="M6 6l12 12M18 6 6 18"/>',
+  calendar:
+    '<rect x="3.6" y="5" width="16.8" height="15.4" rx="2.6"/><path d="M3.6 9.8h16.8M8.2 3v3.6M15.8 3v3.6"/><path d="M8 14.2l2.6 2.4 4.6-4.6"/>',
+  globe:
+    '<circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c2.4 2.4 3.6 5.2 3.6 8.6s-1.2 6.2-3.6 8.6c-2.4-2.4-3.6-5.2-3.6-8.6S9.6 5.8 12 3.4z"/>',
+  map: '<path d="M9 4.2 3.4 6.6v13.2L9 17.4l6 2.4 5.6-2.4V4.2L15 6.6z"/><path d="M9 4.2v13.2M15 6.6v13.2"/>',
+  home: '<path d="M3.8 10.6 12 3.8l8.2 6.8"/><path d="M5.8 9.2v10.4h12.4V9.2"/><path d="M10 19.6v-5h4v5"/>',
+  send: '<path d="M20.4 3.6 3.6 10.4l7 2.9 2.9 7z"/><path d="M20.4 3.6l-9.8 9.7"/>',
+  heart:
+    '<path d="M12 20.2S3.6 15.4 3.6 9.3A4.6 4.6 0 0 1 12 6.8a4.6 4.6 0 0 1 8.4 2.5c0 6.1-8.4 10.9-8.4 10.9z"/>',
+  tag: '<path d="M3.6 12.6V4.4c0-.4.4-.8.8-.8h8.2l7.8 7.8a1.4 1.4 0 0 1 0 2l-6.2 6.2a1.4 1.4 0 0 1-2 0z"/><circle cx="8.2" cy="8.2" r="1.4"/>',
+  user: '<circle cx="12" cy="8.4" r="3.8"/><path d="M4.6 20.2a7.4 7.4 0 0 1 14.8 0"/>',
+};
+---
+
+{
+  name === 'google' ? (
+    <svg width={size} height={size} viewBox="0 0 24 24" class={cls} aria-hidden={label ? undefined : 'true'} role={label ? 'img' : undefined} aria-label={label}>
+      <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z" />
+      <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z" />
+      <path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z" />
+      <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z" />
+    </svg>
+  ) : name === 'star' ? (
+    <svg width={size} height={size} viewBox="0 0 24 24" class={cls} fill="currentColor" aria-hidden={label ? undefined : 'true'} role={label ? 'img' : undefined} aria-label={label}>
+      <path d="M12 2.8l2.8 5.7 6.3.9-4.55 4.43 1.07 6.27L12 17.1l-5.63 2.96 1.07-6.27L2.9 9.4l6.3-.9z" />
+    </svg>
+  ) : name === 'play' ? (
+    <svg width={size} height={size} viewBox="0 0 24 24" class={cls} fill="currentColor" aria-hidden="true">
+      <path d="M8 5.5v13l10.5-6.5z" />
+    </svg>
+  ) : (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width={stroke}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cls}
+      aria-hidden={label ? undefined : 'true'}
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      set:html={paths[name as keyof typeof paths]}
+    />
+  )
+}

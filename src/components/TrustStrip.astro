@@ -1,0 +1,139 @@
+---
+import Icon from './Icon.astro';
+import { business, hoursLabel } from '../data/business';
+import { t, type Lang } from '../i18n/ui';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang).trust;
+---
+
+<section aria-label={d.heading} class="relative z-10 -mt-2 lg:-mt-6">
+  <div class="container-x">
+    <ul class="trust-grid card">
+      <li class="trust-item" data-reveal style="--d:0">
+        <span class="trust-ico trust-ico-amber"><Icon name="star" size={22} /></span>
+        <span class="flex flex-col">
+          <span class="trust-num">
+            <span data-count={business.rating.value} data-decimals="1">{business.rating.value}</span><span class="text-saffron-500">★</span>
+          </span>
+          <span class="trust-label">{d.rating}</span>
+        </span>
+      </li>
+      <li class="trust-item" data-reveal style="--d:1">
+        <span class="trust-ico"><Icon name="calendar" size={22} /></span>
+        <span class="flex flex-col">
+          <span class="trust-num"><span data-count="7">7</span> <span class="trust-unit">{d.daysUnit}</span></span>
+          <span class="trust-label">{d.days}</span>
+        </span>
+      </li>
+      <li class="trust-item" data-reveal style="--d:2">
+        <span class="trust-ico"><Icon name="clock" size={22} /></span>
+        <span class="flex flex-col">
+          <span class="trust-num trust-num-sm">{hoursLabel(lang)}</span>
+          <span class="trust-label">{d.hours}</span>
+        </span>
+      </li>
+      <li class="trust-item" data-reveal style="--d:3">
+        <span class="trust-ico"><Icon name="shield" size={22} /></span>
+        <span class="flex flex-col">
+          <span class="trust-num trust-num-sm">{d.genuine}</span>
+          <span class="trust-label">{d.genuineSub}</span>
+        </span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-radius: 1.5rem;
+    overflow: hidden;
+  }
+  @media (min-width: 1024px) {
+    .trust-grid {
+      grid-template-columns: 1fr 1fr 1.15fr 1.15fr;
+    }
+  }
+  .trust-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.15rem 1.1rem;
+  }
+  .trust-item:nth-child(odd) {
+    border-right: 1px solid var(--color-line);
+  }
+  .trust-item:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--color-line);
+  }
+  @media (min-width: 768px) {
+    .trust-item {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem 1.6rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .trust-item:nth-child(-n + 2) {
+      border-bottom: 0;
+    }
+    .trust-item {
+      border-right: 1px solid var(--color-line);
+    }
+    .trust-item:last-child {
+      border-right: 0;
+    }
+  }
+  .trust-ico {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.9rem;
+    background: var(--color-mint-100);
+    color: var(--color-brand-700);
+  }
+  .trust-ico-amber {
+    background: var(--color-saffron-50);
+    color: var(--color-saffron-500);
+  }
+  .trust-num {
+    font-size: 1.75rem;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-brand-950);
+    font-variant-numeric: tabular-nums;
+  }
+  .trust-num-sm {
+    font-size: 1.2rem;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+  .trust-unit {
+    font-size: 0.55em;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--color-ink-soft);
+  }
+  @media (min-width: 768px) {
+    .trust-num {
+      font-size: 2rem;
+    }
+    .trust-num-sm {
+      font-size: 1.4rem;
+    }
+  }
+  .trust-label {
+    margin-top: 0.3rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+  }
+</style>

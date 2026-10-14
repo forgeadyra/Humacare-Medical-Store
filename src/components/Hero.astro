@@ -1,0 +1,214 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import OpenBadge from './OpenBadge.astro';
+import HeroIllustration from './HeroIllustration.astro';
+import owner from '../assets/images/owner.jpg';
+import { business, telHref, whatsappHref } from '../data/business';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang);
+const tagline = lang === 'hi' ? 'सही दाम, असली दवा और सच्ची सलाह' : business.tagline;
+---
+
+<section class="hero relative overflow-hidden" aria-labelledby="hero-title">
+  <div class="hero-mesh" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="container-x relative grid items-center gap-12 pt-8 pb-16 md:pt-14 lg:grid-cols-[1.08fr_1fr] lg:gap-10 lg:pt-16 lg:pb-24">
+    <div class="hero-copy">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-3">
+        <OpenBadge lang={lang} />
+      </div>
+
+      <h1 id="hero-title" class="hero-h1 mt-6">
+        <span class="block">{d.hero.h1[0]}</span>
+        <span class="block">{d.hero.h1[1]}</span>
+        <span class="hero-h1-accent block">{d.hero.h1[2]}</span>
+      </h1>
+
+      <p class="mt-5 flex items-start gap-3 text-[1.0625rem] font-semibold text-brand-800 md:text-lg">
+        <span class="mt-[0.55em] h-0.5 w-6 shrink-0 rounded bg-saffron-400" aria-hidden="true"></span>
+        <span>“{tagline}”</span>
+      </p>
+      <p class="lede mt-3 max-w-[34rem]">{d.hero.intro}</p>
+
+      <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <a href={telHref} class="btn btn-call !min-h-[3.25rem] !px-6 !text-base">
+          <Icon name="phone" size={20} stroke={2} />
+          {d.cta.call}
+        </a>
+        <div class="grid grid-cols-2 gap-3 sm:contents">
+          <a href={whatsappHref(lang)} target="_blank" rel="noopener" class="btn btn-wa !min-h-[3.25rem]">
+            <Icon name="whatsapp" size={20} stroke={2} />
+            {d.cta.whatsapp}
+          </a>
+          <a href={business.links.maps} target="_blank" rel="noopener" class="btn btn-ghost !min-h-[3.25rem]">
+            <Icon name="directions" size={19} stroke={2} />
+            {d.cta.directions}
+          </a>
+        </div>
+      </div>
+
+      <a href="#reviews" class="rating-chip mt-7" aria-label={`${d.hero.ratingChip} ${d.reviews.outOf} · ${d.hero.ratingCount}`}>
+        <span class="grid h-9 w-9 place-items-center rounded-full bg-white shadow-sm"><Icon name="google" size={18} /></span>
+        <span class="flex flex-col leading-tight">
+          <span class="flex items-center gap-1.5">
+            <span class="text-lg font-extrabold text-brand-950">{business.rating.value}</span>
+            <span class="flex text-saffron-500">
+              {[0, 1, 2, 3, 4].map(() => <Icon name="star" size={15} />)}
+            </span>
+          </span>
+          <span class="text-[0.8125rem] font-medium text-ink-soft">{d.hero.ratingChip} · {d.hero.ratingCount}</span>
+        </span>
+        <Icon name="arrow" size={18} class="chip-arrow ml-1 text-brand-700" />
+      </a>
+    </div>
+
+    <div class="hero-visual relative mx-auto w-full max-w-[36rem] lg:max-w-none">
+      <div class="illo-frame">
+        <HeroIllustration label={d.hero.illoLabel} />
+      </div>
+
+      <figure class="owner-card">
+        <div class="owner-photo">
+          <Image src={owner} alt={d.hero.ownerAlt} width={176} height={220} widths={[120, 176, 240]} sizes="(min-width: 768px) 120px, 88px" class="h-full w-full object-cover" />
+        </div>
+        <figcaption class="min-w-0">
+          <span class="text-[0.7rem] font-bold tracking-[0.12em] text-brand-700 uppercase">{d.hero.ownerLabel}</span>
+          <blockquote class="mt-1.5 text-[0.85rem] leading-snug font-semibold text-brand-950 md:text-[0.9rem]" lang="en">
+            “{d.hero.ownerQuote}”
+          </blockquote>
+          <span class="mt-1.5 flex items-center gap-1.5 text-[0.75rem] text-ink-soft">
+            <Icon name="google" size={12} />
+            {d.hero.ownerQuoteBy}
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-mesh {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(55% 45% at 88% 18%, rgb(195 234 220 / 0.85), transparent 70%),
+      radial-gradient(35% 35% at 6% 88%, rgb(252 197 96 / 0.18), transparent 70%),
+      radial-gradient(45% 55% at 0% 0%, rgb(223 244 236 / 0.9), transparent 70%),
+      radial-gradient(40% 40% at 55% 100%, rgb(195 234 220 / 0.45), transparent 70%);
+  }
+  .hero-h1 {
+    font-size: clamp(2.3rem, 1.25rem + 4.4vw, 4.1rem);
+    line-height: 1.04;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--color-brand-950);
+    text-wrap: balance;
+  }
+  .hero-h1-accent {
+    margin-top: 0.3em;
+    font-size: 0.62em;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-brand-700);
+  }
+  :global(html[lang='hi']) .hero-h1 {
+    font-size: clamp(2.2rem, 1.3rem + 4vw, 3.9rem);
+    line-height: 1.25;
+  }
+  .rating-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0.45rem 1rem 0.45rem 0.45rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.75);
+    box-shadow:
+      inset 0 0 0 1px rgb(15 42 39 / 0.07),
+      var(--shadow-soft);
+    transition: transform 220ms var(--ease-out-soft);
+  }
+  .rating-chip:hover {
+    transform: translateY(-2px);
+  }
+  .rating-chip:hover :global(.chip-arrow) {
+    transform: translateX(3px);
+  }
+  :global(.chip-arrow) {
+    transition: transform 220ms var(--ease-out-soft);
+  }
+
+  .illo-frame {
+    border-radius: 2.25rem;
+    padding: 0.6rem;
+    background: rgb(255 255 255 / 0.55);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.8),
+      var(--shadow-lift);
+  }
+  .illo-frame :global(svg) {
+    border-radius: 1.75rem;
+  }
+
+  .owner-card {
+    position: absolute;
+    left: -0.5rem;
+    bottom: -2.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    width: min(20rem, 86%);
+    padding: 0.6rem 0.9rem 0.6rem 0.6rem;
+    border-radius: 1.35rem;
+    background: #fff;
+    box-shadow: var(--shadow-lift);
+    border: 1px solid rgb(15 42 39 / 0.06);
+    animation:
+      card-in 700ms var(--ease-out-soft) 900ms both,
+      bob 7s ease-in-out 1.6s infinite;
+  }
+  .owner-photo {
+    flex: none;
+    width: 5.5rem;
+    height: 6.875rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    outline: 3px solid var(--color-mint-100);
+    outline-offset: -3px;
+    background: var(--color-mint-100);
+  }
+  @media (min-width: 768px) {
+    .owner-card {
+      left: -1.5rem;
+      bottom: -1.75rem;
+      width: 21.5rem;
+    }
+    .owner-photo {
+      width: 6.25rem;
+      height: 7.75rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .owner-card {
+      left: -3rem;
+    }
+  }
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+    }
+  }
+  @keyframes bob {
+    50% {
+      transform: translate3d(0, -6px, 0);
+    }
+  }
+</style>

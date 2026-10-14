@@ -1,0 +1,100 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import MapEmbed from './MapEmbed.astro';
+import HoursTable from './HoursTable.astro';
+import OpenBadge from './OpenBadge.astro';
+import { business, telHref } from '../data/business';
+import { t, type Lang } from '../i18n/ui';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang);
+---
+
+<section id="visit" class="py-20 md:py-28" aria-labelledby="visit-title">
+  <div class="container-x">
+    <SectionHead id="visit-title" eyebrow={d.visit.eyebrow} title={d.visit.title} lede={d.visit.lede} />
+
+    <div class="mt-12 grid gap-5 lg:grid-cols-[1.25fr_1fr]">
+      <MapEmbed lang={lang} class="min-h-[20rem] md:min-h-[26rem] lg:min-h-full" />
+
+      <div class="card p-6 md:p-8" data-reveal>
+        <div class="grid gap-6">
+          <div class="flex gap-4">
+            <span class="info-ico"><Icon name="pin" size={22} /></span>
+            <div>
+              <h3 class="info-h">{d.visit.address}</h3>
+              <address class="mt-1 not-italic leading-relaxed text-ink">
+                <strong class="font-bold text-brand-950">{business.name}</strong><br />
+                {business.address.full}
+              </address>
+              <p class="mt-2 text-sm text-ink-soft">
+                {d.visit.plusCode}: <span class="font-semibold text-brand-900">{business.plusCode}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="info-ico"><Icon name="phone" size={22} /></span>
+            <div>
+              <h3 class="info-h">{d.visit.phone}</h3>
+              <a href={telHref} class="mt-1 inline-flex min-h-11 items-center text-lg font-bold text-brand-950 underline decoration-mint-300 decoration-2 underline-offset-4 hover:decoration-brand-700">
+                {business.phone.display}
+              </a>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="info-ico"><Icon name="clock" size={22} /></span>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="info-h">{d.visit.hours}</h3>
+                <OpenBadge lang={lang} class="!min-h-8 !text-[0.8125rem]" />
+              </div>
+              <div class="mt-3 -mx-3">
+                <HoursTable lang={lang} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-7 grid grid-cols-2 gap-3">
+          <a href={business.links.maps} target="_blank" rel="noopener" class="btn btn-wa">
+            <Icon name="directions" size={19} stroke={2} />
+            {d.cta.directions}
+          </a>
+          <a href={telHref} class="btn btn-call">
+            <Icon name="phone" size={19} stroke={2} />
+            {d.cta.callShort}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .info-ico {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.9rem;
+    background: var(--color-mint-100);
+    color: var(--color-brand-700);
+  }
+  .info-h {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-brand-700);
+  }
+  :global(html[lang='hi']) .info-h {
+    letter-spacing: 0.02em;
+    font-size: 0.875rem;
+  }
+</style>

@@ -1,0 +1,149 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { t, type Lang } from '../i18n/ui';
+import { pathFor } from '../lib/routes';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang).services;
+const icons = { rx: 'rx', otc: 'pill', supplies: 'kit', advice: 'advice', delivery: 'delivery' } as const;
+---
+
+<section id="services" class="py-20 md:py-28" aria-labelledby="services-title">
+  <div class="container-x">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <SectionHead id="services-title" eyebrow={d.eyebrow} title={d.title} lede={d.lede} />
+      <a href={pathFor('services', lang)} class="btn btn-ghost self-start md:self-auto" data-reveal>
+        {d.more}
+        <Icon name="arrow" size={18} />
+      </a>
+    </div>
+
+    <ul class="svc-grid mt-12">
+      {
+        d.items.map((s, i) => (
+          <li data-reveal style={`--d:${i}`} class="svc">
+            <a href={`${pathFor('services', lang)}#${s.key}`} class="svc-card card">
+              <span class="svc-ico">
+                <Icon name={icons[s.key as keyof typeof icons]} size={28} stroke={1.6} />
+              </span>
+              <h3 class="mt-5 text-lg font-bold tracking-[-0.01em] text-brand-950">{s.title}</h3>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-ink-soft">{s.desc}</p>
+              {s.key === 'delivery' && (
+                <span class="mt-4 inline-flex items-center gap-1.5 self-start rounded-full bg-saffron-50 px-3 py-1.5 text-[0.8125rem] font-bold text-saffron-700 ring-1 ring-saffron-100">
+                  <Icon name="phone" size={14} stroke={2.2} />
+                  {d.confirm}
+                </span>
+              )}
+              <span class="svc-arrow" aria-hidden="true">
+                <Icon name="arrow" size={18} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .svc-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .svc-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+    .svc:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 1024px) {
+    .svc-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+    .svc {
+      grid-column: span 2;
+    }
+    .svc:nth-child(4),
+    .svc:nth-child(5) {
+      grid-column: span 3;
+    }
+  }
+  .svc-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem 1.5rem 1.75rem;
+    transition:
+      transform 300ms var(--ease-out-soft),
+      box-shadow 300ms var(--ease-out-soft);
+  }
+  .svc-card:hover,
+  .svc-card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+  .svc-ico {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.1rem;
+    background: var(--color-mint-100);
+    color: var(--color-brand-700);
+  }
+  .svc-ico::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--color-brand-700);
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+      opacity 300ms var(--ease-out-soft),
+      transform 300ms var(--ease-out-soft);
+  }
+  .svc-ico :global(svg) {
+    position: relative;
+    z-index: 1;
+    transition:
+      transform 400ms var(--ease-out-soft),
+      color 300ms;
+  }
+  .svc-card:hover .svc-ico::after,
+  .svc-card:focus-visible .svc-ico::after,
+  .svc-card:active .svc-ico::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .svc-card:hover .svc-ico :global(svg),
+  .svc-card:focus-visible .svc-ico :global(svg),
+  .svc-card:active .svc-ico :global(svg) {
+    color: #fff;
+    transform: rotate(-8deg) scale(1.08);
+  }
+  .svc-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    color: var(--color-brand-700);
+    background: var(--color-mint-50);
+    transition: transform 300ms var(--ease-out-soft);
+  }
+  .svc-card:hover .svc-arrow {
+    transform: translateX(3px);
+  }
+</style>

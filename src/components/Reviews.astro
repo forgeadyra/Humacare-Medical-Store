@@ -1,0 +1,184 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { business } from '../data/business';
+import { reviews } from '../data/reviews';
+import { t, type Lang } from '../i18n/ui';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang).reviews;
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+const tones = [
+  ['#dff4ec', '#0b544e'],
+  ['#ffecc4', '#7a4205'],
+  ['#e4ecfb', '#23407a'],
+  ['#f6e3ef', '#7a2357'],
+];
+// Each half of the marquee must be wider than the widest viewport.
+const half = reviews.length >= 6 ? reviews : [...reviews, ...reviews, ...reviews].slice(0, Math.max(6, reviews.length));
+const track = [...half, ...half];
+---
+
+<section id="reviews" class="overflow-hidden py-20 md:py-28" aria-labelledby="reviews-title">
+  <div class="container-x">
+    <div class="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+      <SectionHead id="reviews-title" eyebrow={d.eyebrow} title={d.title} lede={d.lede} />
+
+      <div class="summary card" data-reveal style="--d:1">
+        <div class="flex items-center gap-4">
+          <span class="text-[3.25rem] leading-none font-extrabold tracking-[-0.04em] text-brand-950">{business.rating.value}</span>
+          <span class="flex flex-col gap-1">
+            <span class="flex text-saffron-500">
+              {[0, 1, 2, 3, 4].map(() => <Icon name="star" size={20} />)}
+            </span>
+            <span class="flex items-center gap-1.5 text-sm font-semibold text-ink-soft">
+              <Icon name="google" size={14} />
+              {d.basedOn}
+            </span>
+          </span>
+        </div>
+        <a href={business.links.maps} target="_blank" rel="noopener" class="btn btn-dark mt-5 w-full">
+          {d.readAll}
+          <Icon name="external" size={17} />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="marquee mt-12" data-marquee>
+    <ul class="marquee-track" role="list">
+      {
+        track.map((r, i) => {
+          const tone = tones[reviews.indexOf(r) % tones.length];
+          const hidden = i >= reviews.length;
+          return (
+            <li class="review card" aria-hidden={hidden ? 'true' : undefined} data-dup={hidden ? '' : undefined}>
+              <figure class="flex h-full flex-col">
+                <figcaption class="flex items-center gap-3">
+                  <span class="avatar" style={`background:${tone[0]};color:${tone[1]}`} aria-hidden="true">
+                    {initials(r.author)}
+                  </span>
+                  <span class="flex min-w-0 flex-col">
+                    <span class="truncate font-bold text-brand-950">{r.author}</span>
+                    <span class="text-[0.8125rem] text-ink-soft">{d.source}</span>
+                  </span>
+                  <Icon name="google" size={20} class="ml-auto shrink-0" />
+                </figcaption>
+                <blockquote class="mt-4 text-[1.0625rem] leading-relaxed text-ink" lang="en">
+                  <p>“{r.text}”</p>
+                </blockquote>
+              </figure>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <div class="container-x mt-6 flex justify-end">
+      <button
+        type="button"
+        class="pause-btn"
+        data-marquee-toggle
+        aria-pressed="false"
+        aria-label={d.pause}
+        data-pause-label={d.pause}
+        data-play-label={d.play}
+        hidden
+      >
+        <Icon name="pause" size={18} stroke={2.4} class="i-pause" />
+        <Icon name="play" size={18} class="i-play" />
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .summary {
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+  }
+  .marquee {
+    --gap: 1.25rem;
+  }
+  .marquee-track {
+    display: flex;
+    gap: var(--gap);
+    width: max-content;
+    padding: 0.5rem 0 1rem;
+    animation: marquee 48s linear infinite;
+  }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track,
+  .marquee[data-paused] .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    to {
+      transform: translate3d(calc(-50% - var(--gap) / 2), 0, 0);
+    }
+  }
+  .review {
+    flex: none;
+    width: min(21rem, 82vw);
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+  }
+  .avatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 0.95rem;
+  }
+  .pause-btn {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    color: var(--color-brand-900);
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 1.5px var(--color-mint-200),
+      var(--shadow-soft);
+  }
+  .pause-btn[hidden] {
+    display: none;
+  }
+  .pause-btn :global(.i-play),
+  .marquee[data-paused] .pause-btn :global(.i-pause) {
+    display: none;
+  }
+  .marquee[data-paused] .pause-btn :global(.i-play) {
+    display: block;
+  }
+
+  /* Reduced motion: no auto-scroll; a plain swipeable row of the real reviews. */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+      width: auto;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-inline: 1.25rem;
+    }
+    .review {
+      scroll-snap-align: start;
+    }
+    .review[data-dup],
+    .pause-btn {
+      display: none !important;
+    }
+  }
+</style>

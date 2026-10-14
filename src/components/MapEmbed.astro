@@ -1,0 +1,88 @@
+---
+/**
+ * Click-to-load Google Map. Shows a lightweight inline-SVG poster until the
+ * visitor asks for the real map, so the iframe never slows down page load.
+ */
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+import { t, type Lang } from '../i18n/ui';
+interface Props {
+  lang: Lang;
+  class?: string;
+}
+const { lang, class: cls = '' } = Astro.props;
+const d = t(lang).visit;
+---
+
+<div class:list={['map-wrap', cls]} data-map>
+  <svg data-map-poster class="absolute inset-0 h-full w-full" viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="640" height="480" fill="#eef3ec"></rect>
+    <g fill="#e2eadf">
+      <rect x="20" y="30" width="150" height="110" rx="10"></rect>
+      <rect x="200" y="20" width="120" height="130" rx="10"></rect>
+      <rect x="470" y="40" width="150" height="100" rx="10"></rect>
+      <rect x="30" y="300" width="140" height="150" rx="10"></rect>
+      <rect x="380" y="300" width="110" height="80" rx="10"></rect>
+      <rect x="520" y="290" width="110" height="170" rx="10"></rect>
+    </g>
+    <rect x="200" y="300" width="150" height="150" rx="14" fill="#d6ecd9"></rect>
+    <circle cx="250" cy="350" r="14" fill="#c3e3c8"></circle>
+    <circle cx="300" cy="400" r="20" fill="#c3e3c8"></circle>
+    <!-- Govardhan Rd -->
+    <path d="M-20 230 C 160 200, 300 250, 660 190" stroke="#fff" stroke-width="34" fill="none"></path>
+    <path d="M-20 230 C 160 200, 300 250, 660 190" stroke="#f6d495" stroke-width="22" fill="none"></path>
+    <path d="M370 -10 L 350 500" stroke="#fff" stroke-width="18"></path>
+    <path d="M180 -10 L 190 500" stroke="#fff" stroke-width="12"></path>
+    <path d="M -10 290 L 650 300" stroke="#fff" stroke-width="10"></path>
+    <path d="M440 -10 L 470 500" stroke="#fff" stroke-width="8"></path>
+    <text x="40" y="208" font-size="15" font-weight="700" fill="#8a6a2f" font-family="system-ui, sans-serif" transform="rotate(-4 40 208)">Mathura – Govardhan Rd</text>
+    <ellipse cx="320" cy="244" rx="26" ry="8" fill="#042f2c" opacity=".18"></ellipse>
+    <g transform="translate(320 240)">
+      <path d="M0 0c-16-18-28-32-28-48a28 28 0 0 1 56 0c0 16-12 30-28 48z" fill="#0f766e" stroke="#fff" stroke-width="3"></path>
+      <path d="M-5 -60h10v8h8v10h-8v8h-10v-8h-8v-10h8z" fill="#fff"></path>
+    </g>
+    <g transform="translate(360 168)">
+      <rect width="150" height="40" rx="20" fill="#fff"></rect>
+      <text x="75" y="26" text-anchor="middle" font-size="15" font-weight="800" fill="#083d39" font-family="system-ui, sans-serif">{business.name.split(' ')[0]}</text>
+    </g>
+  </svg>
+  <div data-map-poster class="absolute inset-0 bg-gradient-to-t from-brand-950/35 via-transparent to-transparent"></div>
+  <button type="button" class="map-btn" data-map-load data-title={d.mapTitle}>
+    <span class="grid h-10 w-10 place-items-center rounded-full bg-brand-700 text-white"><Icon name="map" size={20} /></span>
+    <span class="flex flex-col items-start text-left leading-tight">
+      <span class="font-bold text-brand-950">{d.loadMap}</span>
+      <span class="text-[0.8125rem] text-ink-soft">{d.mapNote}</span>
+    </span>
+  </button>
+</div>
+
+<style>
+  .map-wrap {
+    position: relative;
+    overflow: hidden;
+    min-height: 18rem;
+    border-radius: 1.5rem;
+    background: #eef3ec;
+    box-shadow: var(--shadow-soft);
+    isolation: isolate;
+  }
+  .map-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 1.25rem;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding: 0.5rem 1.25rem 0.5rem 0.5rem;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: var(--shadow-lift);
+    white-space: nowrap;
+    transition: transform 250ms var(--ease-out-soft);
+  }
+  .map-btn:hover {
+    transform: translateX(-50%) translateY(-2px);
+  }
+</style>

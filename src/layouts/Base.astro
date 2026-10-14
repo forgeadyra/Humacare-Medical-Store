@@ -1,0 +1,111 @@
+---
+import '@fontsource-variable/plus-jakarta-sans/wght.css';
+import '@fontsource/noto-sans-devanagari/devanagari-400.css';
+import '@fontsource/noto-sans-devanagari/devanagari-700.css';
+import '../styles/global.css';
+import jakartaLatin from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
+import devanagari700 from '@fontsource/noto-sans-devanagari/files/noto-sans-devanagari-devanagari-700-normal.woff2?url';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import { business } from '../data/business';
+import { t, type Lang, type RouteKey } from '../i18n/ui';
+import { pathFor } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  /** null for pages without language alternates (404) */
+  routeKey: RouteKey | null;
+  title: string;
+  description: string;
+  schema?: object[];
+  noindex?: boolean;
+}
+
+const { lang, routeKey, title, description, schema = [], noindex = false } = Astro.props;
+const d = t(lang);
+const site = Astro.site!;
+const abs = (p: string) => new URL(p, site).href;
+
+const canonical = routeKey ? abs(pathFor(routeKey, lang)) : abs(Astro.url.pathname);
+const alternates = routeKey
+  ? [
+      { hreflang: 'en-IN', href: abs(pathFor(routeKey, 'en')) },
+      { hreflang: 'hi-IN', href: abs(pathFor(routeKey, 'hi')) },
+      { hreflang: 'x-default', href: abs(pathFor(routeKey, 'en')) },
+    ]
+  : [];
+const ogImage = abs('/og-image.png');
+---
+
+<!doctype html>
+<html lang={lang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+
+    <!-- Hero font weight only (Latin variable font; Devanagari on Hindi pages) -->
+    {
+      lang === 'hi' ? (
+        <link rel="preload" href={devanagari700} as="font" type="font/woff2" crossorigin />
+      ) : (
+        <link rel="preload" href={jakartaLatin} as="font" type="font/woff2" crossorigin />
+      )
+    }
+
+    <meta name="theme-color" content="#0f766e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${business.name} — ${business.tagline}`} />
+    <meta property="og:locale" content={lang === 'hi' ? 'hi_IN' : 'en_IN'} />
+    <meta property="og:locale:alternate" content={lang === 'hi' ? 'en_IN' : 'hi_IN'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="geo.region" content="IN-UP" />
+    <meta name="geo.placename" content={business.address.city} />
+
+    {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body class="min-h-dvh pb-[calc(4.75rem+env(safe-area-inset-bottom))] md:pb-0">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-brand-950 focus:px-5 focus:py-3 focus:text-white"
+      >{d.skip}</a
+    >
+    <Header lang={lang} routeKey={routeKey} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <MobileBar lang={lang} />
+
+    <script>
+      import { initSite } from '../lib/client';
+      initSite();
+    </script>
+  </body>
+</html>

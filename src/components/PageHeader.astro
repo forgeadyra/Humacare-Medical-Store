@@ -1,0 +1,58 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../i18n/ui';
+import { pathFor } from '../lib/routes';
+interface Props {
+  lang: Lang;
+  current: string;
+  eyebrow: string;
+  title: string;
+  intro: string;
+}
+const { lang, current, eyebrow, title, intro } = Astro.props;
+const d = t(lang);
+---
+
+<section class="page-head relative overflow-hidden">
+  <div class="page-mesh" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="container-x relative pt-6 pb-14 md:pt-8 md:pb-20">
+    <nav aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-1 text-sm text-ink-soft">
+        <li>
+          <a href={pathFor('home', lang)} class="inline-flex min-h-11 items-center gap-1.5 font-semibold hover:text-brand-800">
+            <Icon name="home" size={16} />{d.breadcrumbs.home}
+          </a>
+        </li>
+        <li aria-hidden="true" class="text-mint-300">/</li>
+        <li><span aria-current="page" class="font-semibold text-brand-900">{current}</span></li>
+      </ol>
+    </nav>
+    <p class="eyebrow mt-6">{eyebrow}</p>
+    <h1 class="page-h1 mt-3">{title}</h1>
+    <p class="lede mt-5 max-w-2xl">{intro}</p>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .page-mesh {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(50% 70% at 92% 10%, rgb(195 234 220 / 0.9), transparent 70%),
+      radial-gradient(35% 50% at 0% 100%, rgb(252 197 96 / 0.16), transparent 70%);
+  }
+  .page-h1 {
+    max-width: 48rem;
+    font-size: clamp(2.1rem, 1.3rem + 3.4vw, 3.5rem);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--color-brand-950);
+    text-wrap: balance;
+  }
+  :global(html[lang='hi']) .page-h1 {
+    line-height: 1.3;
+  }
+</style>

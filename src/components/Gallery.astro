@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+import SectionHead from './SectionHead.astro';
+import storeFront from '../assets/images/store-front.jpg';
+import counter from '../assets/images/counter.jpg';
+import shelves from '../assets/images/shelves.jpg';
+import interior1 from '../assets/images/interior-1.jpg';
+import interior2 from '../assets/images/interior-2.jpg';
+import { t, type Lang } from '../i18n/ui';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang).gallery;
+
+// TODO(owner): these are placeholders — replace the files in src/assets/images/ with real photos (same names).
+const photos = [
+  { src: storeFront, alt: d.items.storeFront },
+  { src: counter, alt: d.items.counter },
+  { src: shelves, alt: d.items.shelves },
+  { src: interior1, alt: d.items.interior1 },
+  { src: interior2, alt: d.items.interior2 },
+];
+---
+
+<section id="gallery" class="bg-paper-2 py-20 md:py-28" aria-labelledby="gallery-title">
+  <div class="container-x">
+    <SectionHead id="gallery-title" eyebrow={d.eyebrow} title={d.title} lede={d.lede} />
+    <ul class="masonry mt-12">
+      {
+        photos.map((p, i) => (
+          <li class="tile" data-reveal style={`--d:${i % 3}`}>
+            <Image
+              src={p.src}
+              alt={p.alt}
+              widths={[360, 560, 800]}
+              sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 50vw"
+              loading="lazy"
+              decoding="async"
+              class="h-auto w-full"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .masonry {
+    columns: 2;
+    column-gap: 0.75rem;
+  }
+  @media (min-width: 1024px) {
+    .masonry {
+      columns: 3;
+      column-gap: 1.25rem;
+    }
+  }
+  .tile {
+    break-inside: avoid;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: var(--color-mint-100);
+    box-shadow: var(--shadow-soft);
+  }
+  @media (min-width: 1024px) {
+    .tile {
+      margin-bottom: 1.25rem;
+      border-radius: 1.5rem;
+    }
+  }
+  .tile :global(img) {
+    transition: transform 600ms var(--ease-out-soft);
+  }
+  .tile:hover :global(img) {
+    transform: scale(1.04);
+  }
+</style>
