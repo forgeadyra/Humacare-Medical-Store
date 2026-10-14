@@ -80,6 +80,11 @@
   html[lang='hi'] body {
     line-height: 1.7;
   }
+  /* Letter-spacing breaks Devanagari conjuncts — never track Hindi text. */
+  html[lang='hi'] [class*='tracking-'],
+  [lang='hi'] .eyebrow {
+    letter-spacing: 0 !important;
+  }
   html[lang='hi'] :is(h1, h2, h3) {
     line-height: 1.35;
     letter-spacing: 0;

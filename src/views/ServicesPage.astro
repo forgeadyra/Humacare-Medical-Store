@@ -26,7 +26,7 @@ const schema = [
 
 <Base lang={lang} routeKey="services" title={d.meta.services.title} description={d.meta.services.description} schema={schema}>
   <PageHeader lang={lang} current={d.breadcrumbs.services} eyebrow={p.eyebrow} title={p.h1} intro={p.intro}>
-    <ul class="mt-8 flex flex-wrap gap-2">
+    <ul class="chips mt-8 flex gap-2">
       {
         p.sections.map((s) => (
           <li>
@@ -107,7 +107,26 @@ const schema = [
 </Base>
 
 <style>
+  /* Phones: one swipeable row instead of five stacked lines. */
+  .chips {
+    margin-inline: -1.25rem;
+    padding: 0 1.25rem 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .chips {
+      flex-wrap: wrap;
+      margin-inline: 0;
+      padding: 0;
+      overflow: visible;
+    }
+  }
   .chip {
+    white-space: nowrap;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
