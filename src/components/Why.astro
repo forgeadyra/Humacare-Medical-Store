@@ -7,7 +7,7 @@ interface Props {
 }
 const { lang } = Astro.props;
 const d = t(lang).why;
-const icons = ['shield', 'tag', 'heart'] as const;
+const icons = ['shield', 'tag'] as const;
 // Highlight each "genuine" in the Google summary line.
 const parts = business.tagline.split(/(genuine)/i);
 ---
@@ -35,7 +35,7 @@ const parts = business.tagline.split(/(genuine)/i);
       </div>
       <p class="lede mt-8 max-w-2xl text-mint-100/85!" data-reveal>{d.lede}</p>
 
-      <ol class="mt-12 grid gap-4 md:grid-cols-3 md:gap-5">
+      <ol class="mt-12 grid gap-4 md:grid-cols-2 md:gap-5">
         {
           d.points.map((p, i) => (
             <li class="why-card" data-reveal style={`--d:${i}`}>

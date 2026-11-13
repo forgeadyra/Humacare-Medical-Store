@@ -1,9 +1,7 @@
 ---
-import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import OpenBadge from './OpenBadge.astro';
 import HeroIllustration from './HeroIllustration.astro';
-import owner from '../assets/images/owner.jpg';
 import { business, telHref, whatsappHref } from '../data/business';
 import { t, type Lang } from '../i18n/ui';
 
@@ -73,22 +71,6 @@ const tagline = lang === 'hi' ? 'सही दाम, असली दवा औ
       <div class="illo-frame">
         <HeroIllustration label={d.hero.illoLabel} />
       </div>
-
-      <figure class="owner-card">
-        <div class="owner-photo">
-          <Image src={owner} alt={d.hero.ownerAlt} width={176} height={220} widths={[120, 176, 240]} sizes="(min-width: 768px) 120px, 88px" class="h-full w-full object-cover" />
-        </div>
-        <figcaption class="min-w-0">
-          <span class="text-[0.7rem] font-bold tracking-[0.12em] text-brand-700 uppercase">{d.hero.ownerLabel}</span>
-          <blockquote class="mt-1.5 text-[0.85rem] leading-snug font-semibold text-brand-950 md:text-[0.9rem]" lang="en">
-            “{d.hero.ownerQuote}”
-          </blockquote>
-          <span class="mt-1.5 flex items-center gap-1.5 text-[0.75rem] text-ink-soft">
-            <Icon name="google" size={12} />
-            {d.hero.ownerQuoteBy}
-          </span>
-        </figcaption>
-      </figure>
     </div>
   </div>
 </section>
@@ -155,61 +137,5 @@ const tagline = lang === 'hi' ? 'सही दाम, असली दवा औ
   }
   .illo-frame :global(svg) {
     border-radius: 1.75rem;
-  }
-
-  .owner-card {
-    position: relative;
-    margin: -2.75rem 0 0 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    width: min(20rem, 86%);
-    padding: 0.6rem 0.9rem 0.6rem 0.6rem;
-    border-radius: 1.35rem;
-    background: #fff;
-    box-shadow: var(--shadow-lift);
-    border: 1px solid rgb(15 42 39 / 0.06);
-    animation:
-      card-in 600ms var(--ease-out-soft) 350ms both,
-      bob 7s ease-in-out 1.6s infinite;
-  }
-  .owner-photo {
-    flex: none;
-    width: 5.5rem;
-    height: 6.875rem;
-    overflow: hidden;
-    border-radius: 1rem;
-    outline: 3px solid var(--color-mint-100);
-    outline-offset: -3px;
-    background: var(--color-mint-100);
-  }
-  @media (min-width: 768px) {
-    .owner-card {
-      position: absolute;
-      margin: 0;
-      left: -1.5rem;
-      bottom: -1.75rem;
-      width: 21.5rem;
-    }
-    .owner-photo {
-      width: 6.25rem;
-      height: 7.75rem;
-    }
-  }
-  @media (min-width: 1024px) {
-    .owner-card {
-      left: -3rem;
-    }
-  }
-  @keyframes card-in {
-    from {
-      opacity: 0;
-      transform: translate3d(0, 16px, 0);
-    }
-  }
-  @keyframes bob {
-    50% {
-      transform: translate3d(0, -6px, 0);
-    }
   }
 </style>

@@ -1,9 +1,6 @@
 /**
- * Generates PLACEHOLDER images, icons and the OG image.
+ * Generates icons and the PLACEHOLDER OG image.
  * Run: node scripts/generate-assets.mjs
- *
- * The photos in src/assets/images/ are placeholders — replace them with real
- * photos of the store using the SAME file names (see README).
  */
 import sharp from 'sharp';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -25,33 +22,6 @@ const cross = (cx, cy, s, fill) => {
     l = s / 2;
   return `<path d="M${cx - a} ${cy - l}h${2 * a}v${l - a}h${l - a}v${2 * a}h-${l - a}v${l - a}h-${2 * a}v-${l - a}h-${l - a}v-${2 * a}h${l - a}z" fill="${fill}"/>`;
 };
-
-/* ---------- placeholder photos ---------- */
-const photos = [
-  { file: 'owner.jpg', w: 640, h: 800, label: 'Owner photo', hue: ['#d9f1e8', '#9adbc5'] },
-  { file: 'store-front.jpg', w: 1200, h: 900, label: 'Store front', hue: ['#e3f5ee', '#b5e3d2'] },
-  { file: 'counter.jpg', w: 900, h: 1200, label: 'Counter', hue: ['#fff3dc', '#f6d495'] },
-  { file: 'shelves.jpg', w: 1200, h: 800, label: 'Medicine shelves', hue: ['#e6f6f0', '#a9dfcb'] },
-  { file: 'interior-1.jpg', w: 900, h: 1100, label: 'Interior 1', hue: ['#f1efe9', '#d8d0c0'] },
-  { file: 'interior-2.jpg', w: 1200, h: 900, label: 'Interior 2', hue: ['#e9f6f2', '#bfe6d8'] },
-];
-
-for (const p of photos) {
-  const s = Math.min(p.w, p.h);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${p.w}" height="${p.h}">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${p.hue[0]}"/><stop offset="1" stop-color="${p.hue[1]}"/></linearGradient>
-    <pattern id="d" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="#0f766e" opacity=".08"/></pattern>
-  </defs>
-  <rect width="100%" height="100%" fill="url(#g)"/>
-  <rect width="100%" height="100%" fill="url(#d)"/>
-  <circle cx="${p.w / 2}" cy="${p.h / 2 - s * 0.06}" r="${s * 0.13}" fill="#fff" opacity=".75"/>
-  ${cross(p.w / 2, p.h / 2 - s * 0.06, s * 0.12, '#0f766e')}
-  <text x="50%" y="${p.h / 2 + s * 0.16}" text-anchor="middle" font-family="${FONT}" font-size="${s * 0.05}" font-weight="700" fill="#0b544e">${p.label}</text>
-  <text x="50%" y="${p.h / 2 + s * 0.22}" text-anchor="middle" font-family="${FONT}" font-size="${s * 0.032}" fill="#0b544e" opacity=".7">Placeholder — replace with a real photo</text>
-</svg>`;
-  await sharp(Buffer.from(svg)).jpeg({ quality: 82, mozjpeg: true }).toFile(out(`src/assets/images/${p.file}`));
-}
 
 /* ---------- logo mark / icons ---------- */
 const mark = (size, { padding = 0, bg = true } = {}) => {

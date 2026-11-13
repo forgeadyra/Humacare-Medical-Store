@@ -73,9 +73,6 @@ export const business = {
       '&z=17&output=embed',
   },
 
-  // TODO(owner): Drug licence number, shown in the footer.
-  drugLicence: '[DL_NUMBER_PLACEHOLDER]',
-
   // TODO(owner): exact store coordinates from Google Maps (right-click the pin → copy).
   // Do NOT guess. While these are placeholders, `geo` is left out of the JSON-LD.
   geo: {

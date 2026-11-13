@@ -66,10 +66,6 @@ const en = {
     intro: `Your neighbourhood chemist on Govardhan Road, Amar Colony — open every day from ${hoursLabel('en')}. Call or WhatsApp to check if your medicine is in stock before you visit.`,
     ratingChip: `${b.rating.value} on Google`,
     ratingCount: `${b.rating.count} reviews`,
-    ownerAlt: `The owner of ${b.name} at the counter`,
-    ownerLabel: 'Meet the owner',
-    ownerQuote: 'The shop owner having the good knowledge and experience of the medicines.',
-    ownerQuoteBy: 'Siddharth Goyal, Google review',
     illoLabel: 'Illustration of the Humacare pharmacy counter with shelves of medicines',
   },
 
@@ -133,11 +129,6 @@ const en = {
         title: 'Fair, honest rates',
         text: 'Medicine is a need, not a luxury. Customers describe our rates as genuine: a fair price, every time.',
       },
-      {
-        pill: 'Genuine advice',
-        title: 'An owner who knows — and cares',
-        text: 'Customers praise the owner’s knowledge and experience of medicines, and the way people in need are always helped.',
-      },
     ],
   },
 
@@ -151,19 +142,6 @@ const en = {
     source: 'Google review',
     outOf: 'out of 5',
     basedOn: `${b.rating.count} Google reviews`,
-  },
-
-  gallery: {
-    eyebrow: 'Inside the store',
-    title: 'Take a look around',
-    lede: 'A clean, well-organised medical store on Mathura – Govardhan Road.',
-    items: {
-      storeFront: `Front of ${b.name} on Mathura – Govardhan Road, Surya Nagar`,
-      counter: `The service counter at ${b.name}`,
-      shelves: 'Neatly organised medicine shelves inside the store',
-      interior1: 'Inside the pharmacy — wellness and healthcare products',
-      interior2: 'Store interior with medical supplies on display',
-    },
   },
 
   visit: {
@@ -219,7 +197,6 @@ const en = {
     reach: 'Reach us',
     hours: 'Hours',
     everyday: 'Monday – Sunday',
-    licence: 'Drug Licence No.',
     disclaimer:
       'Medicines are dispensed against a valid prescription where required. Information on this site is not medical advice — consult a doctor.',
     rights: 'All rights reserved.',
@@ -375,10 +352,6 @@ const hi: Dict = {
     intro: `गोवर्धन रोड, अमर कॉलोनी में आपका अपना मेडिकल स्टोर — हर दिन ${hoursLabel('hi')} तक खुला। आने से पहले कॉल या WhatsApp करके दवा की उपलब्धता पूछ लें।`,
     ratingChip: `Google पर ${b.rating.value}`,
     ratingCount: `${b.rating.count} रिव्यू`,
-    ownerAlt: `${b.nameHi} के मालिक, काउंटर पर`,
-    ownerLabel: 'मिलिए स्टोर के मालिक से',
-    ownerQuote: 'The shop owner having the good knowledge and experience of the medicines.',
-    ownerQuoteBy: 'Siddharth Goyal, Google रिव्यू',
     illoLabel: 'हुमाकेयर मेडिकल स्टोर के काउंटर और दवाइयों की अलमारियों का चित्र',
   },
 
@@ -442,11 +415,6 @@ const hi: Dict = {
         title: 'सही और ईमानदार दाम',
         text: 'दवा ज़रूरत है, शौक नहीं। ग्राहक हमारे दामों को “genuine” कहते हैं — हर बार सही दाम।',
       },
-      {
-        pill: 'Genuine advice',
-        title: 'जानकार मालिक, जो परवाह करते हैं',
-        text: 'ग्राहक मालिक की दवाइयों की जानकारी और अनुभव की तारीफ़ करते हैं — और ज़रूरतमंद की मदद यहाँ हमेशा होती है।',
-      },
     ],
   },
 
@@ -460,19 +428,6 @@ const hi: Dict = {
     source: 'Google रिव्यू',
     outOf: '5 में से',
     basedOn: `${b.rating.count} Google रिव्यू`,
-  },
-
-  gallery: {
-    eyebrow: 'दुकान के अंदर',
-    title: 'एक झलक हमारे स्टोर की',
-    lede: 'मथुरा–गोवर्धन रोड पर साफ़-सुथरा और व्यवस्थित मेडिकल स्टोर।',
-    items: {
-      storeFront: `मथुरा–गोवर्धन रोड, सूर्या नगर पर ${b.nameHi} का सामने का हिस्सा`,
-      counter: `${b.nameHi} का काउंटर`,
-      shelves: 'स्टोर के अंदर व्यवस्थित दवाइयों की अलमारियाँ',
-      interior1: 'स्टोर के अंदर — वेलनेस और हेल्थकेयर सामान',
-      interior2: 'मेडिकल सामान के साथ स्टोर का अंदरूनी हिस्सा',
-    },
   },
 
   visit: {
@@ -528,7 +483,6 @@ const hi: Dict = {
     reach: 'संपर्क',
     hours: 'समय',
     everyday: 'सोमवार – रविवार',
-    licence: 'ड्रग लाइसेंस नं.',
     disclaimer:
       'जहाँ ज़रूरी है, दवाइयाँ केवल वैध पर्चे पर ही दी जाती हैं। इस वेबसाइट की जानकारी चिकित्सीय सलाह नहीं है — कृपया डॉक्टर से परामर्श करें।',
     rights: 'सर्वाधिकार सुरक्षित।',

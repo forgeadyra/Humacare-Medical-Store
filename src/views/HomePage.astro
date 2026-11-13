@@ -5,7 +5,6 @@ import TrustStrip from '../components/TrustStrip.astro';
 import Services from '../components/Services.astro';
 import Why from '../components/Why.astro';
 import Reviews from '../components/Reviews.astro';
-import Gallery from '../components/Gallery.astro';
 import Visit from '../components/Visit.astro';
 import Faq from '../components/Faq.astro';
 import { t, type Lang } from '../i18n/ui';
@@ -27,7 +26,6 @@ const schema = [pharmacySchema({ lang, withRating: true }), websiteSchema(lang),
   <Services lang={lang} />
   <Why lang={lang} />
   <Reviews lang={lang} />
-  <Gallery lang={lang} />
   <Visit lang={lang} />
   <Faq lang={lang} />
 </Base>

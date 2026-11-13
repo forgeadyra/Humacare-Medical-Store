@@ -22,7 +22,7 @@ npm run preview    # serve the built site locally
 **Vercel:** import the repo, framework preset "Astro" (`vercel.json` included).
 Any static host works: upload the `dist/` folder.
 
-Regenerate the placeholder photos, icons and OG image (reads `src/data/business.ts`):
+Regenerate the icons and placeholder OG image (reads `src/data/business.ts`):
 
 ```bash
 node scripts/generate-assets.mjs
@@ -34,13 +34,12 @@ node scripts/generate-assets.mjs
 
 | What | File |
 |---|---|
-| **All business data** (name, address, phone, hours, links, licence, geo) | `src/data/business.ts` |
+| **All business data** (name, address, phone, hours, links, geo) | `src/data/business.ts` |
 | Google reviews (verbatim) | `src/data/reviews.ts` |
 | All page copy, EN + HI | `src/i18n/ui.ts` |
 | Design tokens (colours, shadows, radius) | `src/styles/global.css` (`@theme`) |
 | JSON-LD (Pharmacy, WebSite, BreadcrumbList, FAQPage) | `src/lib/schema.ts` |
 | Site-wide JS (open badge, reveal, count-up, map, form) | `src/lib/client.ts` |
-| Photos | `src/assets/images/` |
 
 Never hard-code the phone, address or hours anywhere else — every component reads `business.ts`.
 
@@ -51,19 +50,14 @@ Never hard-code the phone, address or hours anywhere else — every component re
 | # | Placeholder | Where to change |
 |---|---|---|
 | 1 | **Domain** `[DOMAIN_PLACEHOLDER]` — currently the Netlify URL | `SITE_URL` in `src/data/business.ts` |
-| 2 | **Drug licence number** `[DL_NUMBER_PLACEHOLDER]` (shown in footer) | `drugLicence` in `src/data/business.ts` |
-| 3 | **Latitude / longitude** `[LAT_PLACEHOLDER]`, `[LNG_PLACEHOLDER]` — copy from Google Maps, don't guess. `geo` is left out of the schema until set | `geo` in `src/data/business.ts` |
-| 4 | **Owner photo** | `src/assets/images/owner.jpg` (portrait, ~640×800) |
-| 5 | **Store photos** — store-front, counter, shelves, interior-1, interior-2 | `src/assets/images/*.jpg` (keep the same file names) |
-| 6 | **OG / social share image** 1200×630 (current one is a generated placeholder) | `public/og-image.png` |
-| 7 | **Remaining 7 Google reviews**, copied word for word with reviewer name | `src/data/reviews.ts` |
-| 8 | **Opening hours** — confirm 7 AM – 11 PM daily | `hours` in `src/data/business.ts` (one value updates the whole site, badge and schema) |
-| 9 | **Delivery area** — confirm; site currently says "call to confirm area" | `delivery` in `business.ts` + delivery copy in `src/i18n/ui.ts` |
-| 10 | **Parking** FAQ answer — confirm | `faq` items in `src/i18n/ui.ts` (search `TODO(owner)`) |
+| 2 | **Latitude / longitude** `[LAT_PLACEHOLDER]`, `[LNG_PLACEHOLDER]` — copy from Google Maps, don't guess. `geo` is left out of the schema until set | `geo` in `src/data/business.ts` |
+| 3 | **OG / social share image** 1200×630 (current one is a generated placeholder) | `public/og-image.png` |
+| 4 | **Remaining 7 Google reviews**, copied word for word with reviewer name | `src/data/reviews.ts` |
+| 5 | **Opening hours** — confirm 7 AM – 11 PM daily | `hours` in `src/data/business.ts` (one value updates the whole site, badge and schema) |
+| 6 | **Delivery area** — confirm; site currently says "call to confirm area" | `delivery` in `business.ts` + delivery copy in `src/i18n/ui.ts` |
+| 7 | **Parking** FAQ answer — confirm | `faq` items in `src/i18n/ui.ts` (search `TODO(owner)`) |
 
 Search the code for `TODO(owner)` to find every spot.
-
-The photos currently in `src/assets/images/` are labelled placeholders — **replace them with real photos before launch**. Astro converts them to WebP automatically.
 
 ---
 
