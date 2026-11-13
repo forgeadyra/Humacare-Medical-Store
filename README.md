@@ -50,7 +50,7 @@ Never hard-code the phone, address or hours anywhere else — every component re
 | # | Placeholder | Where to change |
 |---|---|---|
 | 1 | **Domain** `[DOMAIN_PLACEHOLDER]` — currently the Netlify URL | `SITE_URL` in `src/data/business.ts` |
-| 2 | **Latitude / longitude** `[LAT_PLACEHOLDER]`, `[LNG_PLACEHOLDER]` — copy from Google Maps, don't guess. `geo` is left out of the schema until set | `geo` in `src/data/business.ts` |
+| 2 | **Latitude / longitude** — currently decoded from the Plus Code; confirm against the Google Maps pin | `geo` in `src/data/business.ts` |
 | 3 | **OG / social share image** 1200×630 (current one is a generated placeholder) | `public/og-image.png` |
 | 4 | **Remaining 7 Google reviews**, copied word for word with reviewer name | `src/data/reviews.ts` |
 | 5 | **Opening hours** — confirm 7 AM – 11 PM daily | `hours` in `src/data/business.ts` (one value updates the whole site, badge and schema) |

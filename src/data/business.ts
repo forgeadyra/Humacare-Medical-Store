@@ -73,11 +73,11 @@ export const business = {
       '&z=17&output=embed',
   },
 
-  // TODO(owner): exact store coordinates from Google Maps (right-click the pin → copy).
-  // Do NOT guess. While these are placeholders, `geo` is left out of the JSON-LD.
+  // Decoded from the Google Plus Code above (FJXR+J4 → 7JVVFJXR+J4, cell centre, ±7 m).
+  // TODO(owner): confirm against the Google Maps pin (right-click the pin → copy).
   geo: {
-    lat: '[LAT_PLACEHOLDER]',
-    lng: '[LNG_PLACEHOLDER]',
+    lat: '27.49906',
+    lng: '77.64031',
   },
 
   // TODO(owner): confirm delivery area. Until confirmed, the site always says "call to confirm".
